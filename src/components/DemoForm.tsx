@@ -72,68 +72,49 @@ No menciones que eres una IA. Actúa como si fueras un vendedor real del negocio
 
     try {
       const resp = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`,
+        "https://api.anthropic.com/v1/messages",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+            "x-api-key": import.meta.env.VITE_ANTHROPIC_API_KEY || "sk-ant-api03-EXAMPLE_KEY",
+            "anthropic-version": "2023-06-01",
           },
           body: JSON.stringify({
-            messages: allMessages,
-            systemPrompt: buildSystemPrompt(),
+            model: "claude-3-haiku-20240307",
+            max_tokens: 1000,
+            system: buildSystemPrompt(),
+            messages: allMessages.map(msg => ({
+              role: msg.role,
+              content: msg.content
+            }))
           }),
         }
       );
 
       if (!resp.ok) {
         const err = await resp.json().catch(() => ({ error: "Error" }));
-        throw new Error(err.error || `Error ${resp.status}`);
+        throw new Error(err.error?.message || `Error ${resp.status}`);
       }
 
-      const reader = resp.body!.getReader();
-      const decoder = new TextDecoder();
-      let buf = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buf += decoder.decode(value, { stream: true });
-
-        let nl: number;
-        while ((nl = buf.indexOf("\n")) !== -1) {
-          let line = buf.slice(0, nl);
-          buf = buf.slice(nl + 1);
-          if (line.endsWith("\r")) line = line.slice(0, -1);
-          if (!line.startsWith("data: ")) continue;
-          const json = line.slice(6).trim();
-          if (json === "[DONE]") break;
-          try {
-            const parsed = JSON.parse(json);
-            const content = parsed.choices?.[0]?.delta?.content;
-            if (content) {
-              assistantSoFar += content;
-              setMessages((prev) => {
-                const last = prev[prev.length - 1];
-                if (last?.role === "assistant") {
-                  return prev.map((m, i) =>
-                    i === prev.length - 1 ? { ...m, content: assistantSoFar } : m
-                  );
-                }
-                return [...prev, { role: "assistant", content: assistantSoFar }];
-              });
-            }
-          } catch {
-            buf = line + "\n" + buf;
-            break;
-          }
-        }
+      const data = await resp.json();
+      const content = data.content?.[0]?.text;
+      
+      if (content) {
+        setMessages((prev) => [
+          ...prev,
+          { role: "assistant", content },
+        ]);
+      } else {
+        throw new Error("No se recibió respuesta de Claude");
       }
+      
     } catch (e: any) {
-      toast.error(e.message || "Error al conectar con la IA");
+      console.error("Error en API Anthropic:", e);
+      toast.error(e.message || "Error al conectar con Claude");
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "Lo siento, ocurrió un error. Intenta de nuevo." },
+        { role: "assistant", content: "Lo siento, ocurrió un error al conectar con Claude. Intenta de nuevo." },
       ]);
     } finally {
       setIsLoading(false);
@@ -144,7 +125,7 @@ No menciones que eres una IA. Actúa como si fueras un vendedor real del negocio
     const text = encodeURIComponent(
       `¡Hola! Quiero INKABOT para mi negocio.\n\nNegocio: ${negocio}\nRubro: ${rubro}\nTono: ${tono}`
     );
-    window.open(`https://wa.me/51999999999?text=${text}`, "_blank");
+    window.open(`https://wa.me/51968201492?text=${text}`, "_blank");
   };
 
   return (
