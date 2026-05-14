@@ -2,6 +2,7 @@ import { useState, FormEvent, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Send, ArrowRight, ArrowLeft, MessageCircle, Phone, Video, MoreVertical, Check, CheckCheck } from "lucide-react";
 import { toast } from "sonner";
+import { chatWithAnthropic } from "@/api/chat";
 
 type Step = 1 | 2 | 3;
 type Tone = "amigable" | "formal" | "divertido";
@@ -68,53 +69,34 @@ No menciones que eres una IA. Actúa como si fueras un vendedor real del negocio
     setInput("");
     setIsLoading(true);
 
-    let assistantSoFar = "";
-
     try {
-      const resp = await fetch(
-        "https://api.anthropic.com/v1/messages",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": import.meta.env.VITE_ANTHROPIC_API_KEY || "sk-ant-api03-EXAMPLE_KEY",
-            "anthropic-version": "2023-06-01",
-          },
-          body: JSON.stringify({
-            model: "claude-3-haiku-20240307",
-            max_tokens: 1000,
-            system: buildSystemPrompt(),
-            messages: allMessages.map(msg => ({
-              role: msg.role,
-              content: msg.content
-            }))
-          }),
-        }
-      );
+      const response = await chatWithAnthropic({
+        messages: allMessages.map(msg => ({
+          role: msg.role,
+          content: msg.content
+        })),
+        systemPrompt: buildSystemPrompt()
+      });
 
-      if (!resp.ok) {
-        const err = await resp.json().catch(() => ({ error: "Error" }));
-        throw new Error(err.error?.message || `Error ${resp.status}`);
+      if (response.error) {
+        throw new Error(response.error);
       }
 
-      const data = await resp.json();
-      const content = data.content?.[0]?.text;
-      
-      if (content) {
+      if (response.content) {
         setMessages((prev) => [
           ...prev,
-          { role: "assistant", content },
+          { role: "assistant", content: response.content },
         ]);
       } else {
-        throw new Error("No se recibió respuesta de Claude");
+        throw new Error("No se recibió respuesta del asistente");
       }
       
     } catch (e: any) {
-      console.error("Error en API Anthropic:", e);
-      toast.error(e.message || "Error al conectar con Claude");
+      console.error("Error en chat:", e);
+      toast.error(e.message || "Error al conectar con el asistente");
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "Lo siento, ocurrió un error al conectar con Claude. Intenta de nuevo." },
+        { role: "assistant", content: "Lo siento, ocurrió un error. Intenta de nuevo." },
       ]);
     } finally {
       setIsLoading(false);
