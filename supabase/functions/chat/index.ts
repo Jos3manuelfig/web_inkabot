@@ -21,27 +21,28 @@ serve(async (req) => {
       );
     }
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) {
-      throw new Error("LOVABLE_API_KEY is not configured");
+    // La API key se obtiene de los secrets de Supabase, NUNCA del cliente
+    const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");
+    if (!ANTHROPIC_API_KEY) {
+      console.error("ANTHROPIC_API_KEY no está configurada en los secrets de Supabase");
+      return new Response(
+        JSON.stringify({ error: "Error de configuración del servidor" }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
         "Content-Type": "application/json",
+        "x-api-key": ANTHROPIC_API_KEY,
+        "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
-        messages: [
-          {
-            role: "system",
-            content: systemPrompt || "Eres un asistente de ventas amigable por WhatsApp.",
-          },
-          ...messages,
-        ],
-        stream: true,
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: 1000,
+        system: systemPrompt || "Eres un asistente de ventas amigable por WhatsApp.",
+        messages,
       }),
     });
 
@@ -59,15 +60,16 @@ serve(async (req) => {
         );
       }
       const t = await response.text();
-      console.error("AI gateway error:", response.status, t);
+      console.error("Anthropic API error:", response.status, t);
       return new Response(
         JSON.stringify({ error: "Error del servicio de IA" }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    return new Response(response.body, {
-      headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
+    const data = await response.json();
+    return new Response(JSON.stringify(data), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
     console.error("chat error:", e);

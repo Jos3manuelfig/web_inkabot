@@ -2,7 +2,7 @@ import { useState, FormEvent, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Send, ArrowRight, ArrowLeft, MessageCircle, Phone, Video, MoreVertical, Check, CheckCheck } from "lucide-react";
 import { toast } from "sonner";
-import { chatWithAnthropic } from "@/api/chat";
+import { chatWithAnthropic, getRemainingMessages } from "@/api/chat";
 
 type Step = 1 | 2 | 3;
 type Tone = "amigable" | "formal" | "divertido";
@@ -31,6 +31,7 @@ const DemoForm = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [remaining, setRemaining] = useState(getRemainingMessages());
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -63,6 +64,13 @@ No menciones que eres una IA. Actúa como si fueras un vendedor real del negocio
 
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
+
+    // Verificar límite antes de agregar el mensaje
+    if (remaining <= 0) {
+      toast.error(`Has alcanzado el límite de mensajes de prueba. ¡Contáctanos para tu bot completo!`);
+      return;
+    }
+
     const userMsg: Message = { role: "user", content: input.trim() };
     const allMessages = [...messages, userMsg];
     setMessages(allMessages);
@@ -87,6 +95,8 @@ No menciones que eres una IA. Actúa como si fueras un vendedor real del negocio
           ...prev,
           { role: "assistant", content: response.content },
         ]);
+        // Actualizar contador de mensajes restantes
+        setRemaining(getRemainingMessages());
       } else {
         throw new Error("No se recibió respuesta del asistente");
       }
@@ -332,13 +342,16 @@ No menciones que eres una IA. Actúa como si fueras un vendedor real del negocio
                   <Send className="w-4 h-4" />
                 </button>
               </div>
-              <div className="flex justify-between mt-3">
+              <div className="flex items-center justify-between mt-3">
                 <button
                   onClick={() => setStep(1)}
                   className="text-xs text-muted-foreground hover:text-foreground transition-colors"
                 >
                   ← Editar negocio
                 </button>
+                <span className={`text-xs font-mono-ui ${remaining <= 3 ? 'text-orange-400' : 'text-muted-foreground'}`}>
+                  {remaining > 0 ? `${remaining} msg restantes` : 'Límite alcanzado'}
+                </span>
                 <Button
                   variant="hero"
                   size="sm"

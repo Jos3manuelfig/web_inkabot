@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
+import RequisitosSection from "@/components/RequisitosSection";
 import BenefitsSection from "@/components/BenefitsSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import DemoForm from "@/components/DemoForm";
@@ -17,6 +18,7 @@ const Index = () => {
       <div className="noise-overlay" />
       <Navbar />
       <HeroSection />
+      <RequisitosSection />
       <BenefitsSection />
       <HowItWorksSection />
       <DemoForm />
