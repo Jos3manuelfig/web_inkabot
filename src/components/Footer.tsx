@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { MapPin } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -17,6 +18,14 @@ const Footer = () => {
             <p className="leading-relaxed">
               Automatización de ventas por WhatsApp con inteligencia artificial. Vende más, trabaja menos.
             </p>
+            <div className="flex items-start gap-2 mt-4">
+              <MapPin size={15} className="text-primary shrink-0 mt-0.5" />
+              <p className="leading-relaxed">
+                Urb. El Taro Mz. W, Lote 2, piso 2
+                <br />
+                Puente Piedra, Lima
+              </p>
+            </div>
           </div>
           <div>
             <h4 className="font-semibold text-foreground mb-3">Navegación</h4>

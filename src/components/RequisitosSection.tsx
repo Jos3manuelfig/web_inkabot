@@ -54,7 +54,7 @@ const RequisitosSection = () => {
               </span>
 
               {/* Icon */}
-              <div className="relative w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 group-hover:shadow-[0_0_24px_hsl(147_100%_50%/0.15)] transition-all duration-500">
+              <div className="relative w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 group-hover:shadow-[0_0_24px_hsl(25_100%_55%/0.15)] transition-all duration-500">
                 <req.icon className="w-7 h-7 text-primary" />
               </div>
 

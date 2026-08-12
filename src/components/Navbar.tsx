@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { LOGIN_URL, REGISTER_URL } from "@/lib/config";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -30,10 +31,16 @@ const Navbar = () => {
             </a>
           ))}
           <a
-            href="https://app.inkabot.online/login"
-            className="text-sm font-semibold text-primary-foreground bg-primary px-4 py-2 rounded-full hover:shadow-[0_0_20px_hsl(147_100%_50%/0.4)] transition-all duration-300"
+            href={LOGIN_URL}
+            className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
           >
-            Comenzar
+            Iniciar sesión
+          </a>
+          <a
+            href={REGISTER_URL}
+            className="text-sm font-semibold text-primary-foreground bg-primary px-4 py-2 rounded-full hover:shadow-[0_0_20px_hsl(25_100%_55%/0.4)] transition-all duration-300"
+          >
+            Crear vendedor IA
           </a>
         </div>
 
@@ -67,11 +74,18 @@ const Navbar = () => {
             </a>
           ))}
           <a
-            href="https://app.inkabot.online/login"
+            href={LOGIN_URL}
+            onClick={() => setOpen(false)}
+            className="block py-2 text-center text-muted-foreground hover:text-primary transition-colors"
+          >
+            Iniciar sesión
+          </a>
+          <a
+            href={REGISTER_URL}
             onClick={() => setOpen(false)}
             className="block mt-2 text-center font-semibold text-primary-foreground bg-primary px-4 py-2 rounded-full"
           >
-            Comenzar
+            Crear vendedor IA
           </a>
         </div>
       )}

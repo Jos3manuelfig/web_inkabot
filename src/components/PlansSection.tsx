@@ -1,4 +1,5 @@
 import { Check } from "lucide-react";
+import { REGISTER_URL } from "@/lib/config";
 
 const PlansSection = () => {
   return (
@@ -15,7 +16,7 @@ const PlansSection = () => {
 
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* Plan Básico */}
-          <div className="glass-card rounded-2xl p-8 relative hover:shadow-[0_0_30px_hsl(147_100%_50%/0.3)] transition-all duration-300">
+          <div className="glass-card rounded-2xl p-8 relative hover:shadow-[0_0_30px_hsl(25_100%_55%/0.3)] transition-all duration-300">
             <div className="absolute top-4 right-4">
               <span className="bg-primary/20 text-primary px-3 py-1 rounded-full text-sm font-semibold">
                 PARA EMPEZAR
@@ -50,13 +51,13 @@ const PlansSection = () => {
               </div>
             </div>
 
-            <a href="https://app.inkabot.online/login" className="w-full bg-primary/10 text-primary border border-primary/20 rounded-lg py-3 font-semibold hover:bg-primary hover:text-primary-foreground hover:shadow-[0_0_20px_hsl(147_100%_50%/0.4)] transition-all duration-300 inline-block text-center">
+            <a href={`${REGISTER_URL}?plan=emprendedor`} className="w-full bg-primary/10 text-primary border border-primary/20 rounded-lg py-3 font-semibold hover:bg-primary hover:text-primary-foreground hover:shadow-[0_0_20px_hsl(25_100%_55%/0.4)] transition-all duration-300 inline-block text-center">
               Quiero el Plan Emprendedor
             </a>
           </div>
 
           {/* Plan Profesional */}
-          <div className="glass-card rounded-2xl p-8 relative hover:shadow-[0_0_30px_hsl(147_100%_50%/0.3)] transition-all duration-300 border border-primary/20">
+          <div className="glass-card rounded-2xl p-8 relative hover:shadow-[0_0_30px_hsl(25_100%_55%/0.3)] transition-all duration-300 border border-primary/20">
             <div className="absolute top-4 right-4">
               <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
                 RECOMENDADO
@@ -95,7 +96,7 @@ const PlansSection = () => {
               </div>
             </div>
 
-            <a href="https://app.inkabot.online/login" className="w-full bg-primary text-primary-foreground rounded-lg py-3 font-semibold hover:shadow-[0_0_20px_hsl(147_100%_50%/0.4)] transition-all duration-300 inline-block text-center">
+            <a href={`${REGISTER_URL}?plan=profesional`} className="w-full bg-primary text-primary-foreground rounded-lg py-3 font-semibold hover:shadow-[0_0_20px_hsl(25_100%_55%/0.4)] transition-all duration-300 inline-block text-center">
               Elegir Plan Profesional
             </a>
           </div>

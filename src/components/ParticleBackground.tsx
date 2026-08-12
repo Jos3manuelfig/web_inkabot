@@ -50,7 +50,7 @@ const ParticleBackground = () => {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 255, 102, ${p.opacity})`;
+        ctx.fillStyle = `rgba(255, 122, 26, ${p.opacity})`;
         ctx.fill();
       });
 
@@ -64,7 +64,7 @@ const ParticleBackground = () => {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(0, 255, 102, ${0.06 * (1 - dist / 120)})`;
+            ctx.strokeStyle = `rgba(255, 122, 26, ${0.06 * (1 - dist / 120)})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }

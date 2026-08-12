@@ -51,7 +51,7 @@ const HowItWorksSection = () => {
                 </div>
 
                 {/* Dot */}
-                <div className="hidden md:flex w-4 h-4 rounded-full bg-primary shadow-[0_0_20px_hsl(147_100%_50%/0.5)] z-10 shrink-0" />
+                <div className="hidden md:flex w-4 h-4 rounded-full bg-primary shadow-[0_0_20px_hsl(25_100%_55%/0.5)] z-10 shrink-0" />
 
                 <div className="flex-1" />
               </div>

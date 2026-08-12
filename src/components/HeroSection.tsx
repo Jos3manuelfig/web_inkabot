@@ -1,4 +1,9 @@
 import { Button } from "@/components/ui/button";
+import { REGISTER_URL } from "@/lib/config";
+
+const WHATSAPP_DEMO_URL =
+  "https://wa.me/51968201492?text=" +
+  encodeURIComponent("Hola, quiero agendar una demo de INKABOT para mi negocio.");
 
 const HeroSection = () => {
   return (
@@ -23,14 +28,14 @@ const HeroSection = () => {
         </p>
 
         <div className="opacity-0 animate-fade-up-blur stagger-3 flex flex-col sm:flex-row gap-4 justify-center">
-          <Button variant="hero" size="lg" asChild>
-            <a href="#demo" className="px-8 py-6 text-base">
-              Automatiza tus ventas ahora
+          <Button variant="hero-outline" size="lg" asChild>
+            <a href={REGISTER_URL} className="px-8 py-6 text-base">
+              Crear vendedor IA
             </a>
           </Button>
-          <Button variant="hero-outline" size="lg" asChild>
-            <a href="#como-funciona" className="px-8 py-6 text-base">
-              Cómo funciona
+          <Button variant="hero" size="lg" asChild>
+            <a href={WHATSAPP_DEMO_URL} target="_blank" rel="noopener noreferrer" className="px-8 py-6 text-base">
+              Agendar una demo
             </a>
           </Button>
         </div>
