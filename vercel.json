@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/privacidad", "destination": "/privacidad/index.html" },
+    { "source": "/terminos", "destination": "/terminos/index.html" },
+    { "source": "/eliminacion-de-datos", "destination": "/eliminacion-de-datos/index.html" }
+  ]
+}

@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { MapPin } from "lucide-react";
 
 const Footer = () => {
@@ -39,9 +38,11 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold text-foreground mb-3">Legal</h4>
             <div className="space-y-2">
-              <Link to="/privacidad" className="block hover:text-primary transition-colors">Políticas de Privacidad</Link>
-              <Link to="/eliminacion-datos" className="block hover:text-primary transition-colors">Eliminación de Datos</Link>
-              <Link to="/terminos" className="block hover:text-primary transition-colors">Condiciones de Uso</Link>
+              {/* Enlaces normales (no <Link>) a propósito: son páginas HTML estáticas
+                  fuera de la SPA, deben cargar como navegación completa. */}
+              <a href="/privacidad" className="block hover:text-primary transition-colors">Políticas de Privacidad</a>
+              <a href="/eliminacion-de-datos" className="block hover:text-primary transition-colors">Eliminación de Datos</a>
+              <a href="/terminos" className="block hover:text-primary transition-colors">Condiciones de Uso</a>
             </div>
           </div>
         </div>
