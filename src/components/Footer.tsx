@@ -1,9 +1,10 @@
-import { MapPin } from "lucide-react";
-
 const Footer = () => {
   return (
+    // Los datos legales (razón social, RUC, dirección) y los enlaces a las
+    // páginas legales viven en el footer estático de index.html, no aquí:
+    // tienen que estar en el HTML crudo para el rastreador de Meta.
     <footer className="relative z-10 border-t border-border">
-      <div className="container max-w-6xl mx-auto px-4 py-16">
+      <div className="container max-w-6xl mx-auto px-4 pt-16 pb-10">
         {/* Big brand */}
         <div className="text-center mb-12">
           <span className="text-[12vw] md:text-[8vw] font-bold tracking-tighter leading-none text-foreground/5 select-none">
@@ -11,20 +12,12 @@ const Footer = () => {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-muted-foreground">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-muted-foreground">
           <div>
             <h4 className="font-semibold text-foreground mb-3">INKABOT</h4>
             <p className="leading-relaxed">
               Automatización de ventas por WhatsApp con inteligencia artificial. Vende más, trabaja menos.
             </p>
-            <div className="flex items-start gap-2 mt-4">
-              <MapPin size={15} className="text-primary shrink-0 mt-0.5" />
-              <p className="leading-relaxed">
-                Urb. El Taro Mz. W, Lote 2, piso 2
-                <br />
-                Puente Piedra, Lima
-              </p>
-            </div>
           </div>
           <div>
             <h4 className="font-semibold text-foreground mb-3">Navegación</h4>
@@ -35,20 +28,6 @@ const Footer = () => {
               <a href="#configurar" className="block hover:text-primary transition-colors">Configurar</a>
             </div>
           </div>
-          <div>
-            <h4 className="font-semibold text-foreground mb-3">Legal</h4>
-            <div className="space-y-2">
-              {/* Enlaces normales (no <Link>) a propósito: son páginas HTML estáticas
-                  fuera de la SPA, deben cargar como navegación completa. */}
-              <a href="/privacidad" className="block hover:text-primary transition-colors">Políticas de Privacidad</a>
-              <a href="/eliminacion-de-datos" className="block hover:text-primary transition-colors">Eliminación de Datos</a>
-              <a href="/terminos" className="block hover:text-primary transition-colors">Condiciones de Uso</a>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-t border-border mt-12 pt-8 text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} INKABOT. Todos los derechos reservados.
         </div>
       </div>
     </footer>
